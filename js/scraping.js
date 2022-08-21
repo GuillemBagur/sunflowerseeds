@@ -38,12 +38,14 @@ const scrape = () => {
     // Converting all into a text string (separating each node with two backspaces)
     let text = '';
     textEls.map(el => text += el.innerText + '\n\n');
-    document.getElementById('text').value = (overwrite.checked) ? text : document.getElementById('text').value+text;
-    updateText();
+    document.getElementById('text').innerHTML = (overwrite.checked) ? text : document.getElementById('text').innerHTML.replace(/<[^>]*>/gi, "")+text;
+    
     renderLetters();
     webUrl.value = null;
     hideAllPopups();
     toast.classList.add('hidden');
+    saveStat("scrape", 1);
+    saveText();
   });
 }
 

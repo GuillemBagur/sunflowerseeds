@@ -1,0 +1,12 @@
+*amor#
+*ara/ndano#
+*avio/n#
+*bacalao#
+*ratón#
+*roca#
+*rocoso#
+*rumba#
+*somali/#
+*tartamudo#
+*tiburo/n#
+*za/ngano#

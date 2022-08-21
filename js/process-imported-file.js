@@ -83,7 +83,7 @@ const readPDF = file => {
   // If that PDF has phisical text, execute a OCR process
   // We give 1s of waiting time just in case
   sleep(1000).then(()=>{
-    if(document.getElementById('text').value == prevImportVal){
+    if(document.getElementById('text').innerHTML == prevImportVal){
       let ans = confirm('No hemos detectado texto en este PDF, ¿quieres escanear una página?');
       if(!ans) return;
       ocrPDF(URL.createObjectURL(file));

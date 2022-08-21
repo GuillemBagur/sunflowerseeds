@@ -38,8 +38,9 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
   <div id="background" class="background"></div>
 
   <div id="modal" class="modal hidden"></div>
+  <div id="word-corrector" class="popup word-corrector" data-bgopacity="0" onclick="addWordToDict(this)"></div>
 
-  <div id="notice-board" class="notice-board popup">
+  <div id="notice-board" class="notice-board popup ui-popup">
     <h2><?php echo ($text[$lang]['notice-board']['title']); ?> </h2>
     <p><?php echo ($text[$lang]['notice-board']['text'][0]); ?></p>
     <?php echo ($text[$lang]['notice-board']['text'][1]); ?>
@@ -49,7 +50,7 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
     <p><?php echo ($text[$lang]['notice-board']['text'][3]); ?></p>
   </div>
 
-  <div id="share-app" class="share-app popup">
+  <div id="share-app" class="share-app popup ui-popup">
     <h2><?php echo ($text[$lang]['share-app']['title']); ?></h2>
     <p>
       <?php echo ($text[$lang]['share-app']['text'][0]); ?>
@@ -63,7 +64,7 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
 
   </div>
 
-  <div id="menu" class="menu popup">
+  <div id="menu" class="menu popup ui-popup">
     <div class="bordes-redondeados"></div>
     <a class="btn btn-dark btn-speech" id="btn-speech" title="Escuchar el texto le&iacute;do por una voz en off">
       <i class="icofont-audio"></i> <?php echo ($text[$lang]['tools'][0]); ?>
@@ -91,7 +92,7 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
 
   </div>
 
-  <div id="options" class="options popup">
+  <div id="options" class="options popup ui-popup">
     <a name="top-options"></a>
     <a name="text-format"></a>
     <fieldset>
@@ -172,11 +173,15 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
         <?php echo ($text[$lang]['options']['lang']['labels'][4]); ?></label>
       <br>
       <label><?php echo ($text[$lang]['options']['lang']['labels'][5]); ?></label><input type="color" id="highlight-color" class="app-option" value="#ffffff"><br>
+      <br>
+      <label><?php echo ($text[$lang]['options']['lang']['labels'][6]); ?><input type="checkbox" id="active-dict"></label><br>
+
+
     </fieldset>
   </div>
 
 
-  <div id="read" class="read popup">
+  <div id="read" class="read popup ui-popup">
     <a class="btn btn-dark btn-options" href="#text-color">
       <i class="icofont-options"></i> Resaltar letras
     </a>
@@ -187,7 +192,7 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
   </div>
 
 
-  <div id="import-text" class="import-text popup">
+  <div id="import-text" class="import-text popup ui-popup">
     <div class="styler-wrapper">
       <div class="input-styler">
         <i class="icofont-upload-alt"></i>
@@ -203,12 +208,12 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
     <input type="text" id="shared-code" placeholder="Código"><a onclick="getTextFromCode()" class="btn" id="get-text-from-code">Buscar</a>
   </div>
 
-  <div id="text-history" class="text-history popup">
+  <div id="text-history" class="text-history popup ui-popup">
     <ul id="saved-texts"></ul>
   </div>
 
 
-  <div id="share-text" class="share-text popup">
+  <div id="share-text" class="share-text popup ui-popup">
     <form>
       <input id="share-code" type="text" value="<?php echo ($_GET['code']) ?>" disabled>
       <a class="btn" onclick="copyFrom('share-code')"><i class="icofont-ui-copy"></i> Copiar c&oacute;digo</a>
@@ -216,7 +221,7 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
   </div>
 
 
-  <div id="canvas-wrapper" class="canvas-wrapper popup">
+  <div id="canvas-wrapper" class="canvas-wrapper popup ui-popup">
     <a class="btn" id="btn-ocr"><?php echo ($text[$lang]['options']['text-format']['labels'][4]); ?></a>
     <select class="" id="ocr-lang">
       <option value="spa">Idioma</option>
@@ -285,15 +290,15 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
     </div>
 
     <div class="div-text">
-      <a id="0" class="tab tab-1 active" onclick="toggleTabs(this)" title="(Ctrl+Flecha hacia la izquierda)"><?php echo ($text[$lang]['text']['sheets'][0]); ?></a>
-      <a id="1" class="tab tab-2" onclick="toggleTabs(this)" title="(Ctrl+Flecha hacia la derecha)"><?php echo ($text[$lang]['text']['sheets'][1]); ?></a>
       <div class="text-options">
         <a class="btn" onclick="copyText()" title="(Ctrl+C)"><i class="icofont-ui-copy"></i><?php echo ($text[$lang]['text']['buttons'][0]); ?></a>
         <a class="btn" onclick="deleteText()" title="(Ctrl+Backspace)"><i class="icofont-ui-delete"></i><?php echo ($text[$lang]['text']['buttons'][1]); ?></a>
       </div>
       <div class="text-container">
-        <div contenteditable="true" id="display-text" class="text"></div>
-        <textarea id="text" class="text"></textarea>
+
+        <div contenteditable="true" spellcheck="false" id="text" class="text">
+
+        </div>
       </div>
       <label class="label-overwrite" title="Sobreescribir el texto anterior con el nuevo al importar texto de un documento"><input id="overwrite" type="checkbox" checked>Sobreescribir texto</label>
     </div>
@@ -316,6 +321,8 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
     // As the Speech button's inner HTML changes dynamically (when you click on it)
     // It's necessary to load the translation from PHP to a JS variable
     let speechButtonInner = `<?php echo ($text[$lang]['tools'][0]); ?>`
+
+    let jsLang = '<?php echo($lang); ?>';
   </script>
 
 
@@ -330,13 +337,21 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
     echo ("
       <script>
         let webLoadingData = JSON.parse(getKeyData('sunflower-seeds', '{}', true));
-        webLoadingData['text'][0] = `$givenText`;
+        webLoadingData['text'] = `$givenText`;
         localStorage.setItem('sunflower-seeds', JSON.stringify(webLoadingData));
         window.location.href = window.location.href.split('?')[0];
       </script>
       ");
   }
   ?>
+
+  <script>
+    if ('<?php echo ($_GET["code"]) ?>' === "error") {
+      alert("Ahora mismo no puedes compartir el texto. Inténtalo más tarde.");
+      window.location.href = "index.php?lang=<?php echo($lang); ?>";
+    }
+  </script>
+
   <script type="text/javascript" src="js/display-popups.js"></script>
   <script type="text/javascript" src="js/speech.js"></script>
   <script type="text/javascript" src="js/options.js"></script>
@@ -359,6 +374,14 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
 
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=n1eTMzx4"></script>
 
+  <script>
+    const showCodeParam = +"<?php echo($_GET["showCode"] || "0") ?>";
+    if(showCodeParam) {
+      console.log(showCodeParam);
+      console.log(2);
+      execShare();
+    }
+  </script>
 
   <!--
     <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.26.2/docxtemplater.js"></script>

@@ -95,7 +95,8 @@
             'Acento de la voz en off',
             'Velocidad de la voz en off',
             'Resaltar la palabra que est&aacute; leyendo la voz en off',
-            'Color de resaltado'
+            'Color de resaltado',
+            'Activar correción automática'
           )
         ),
 
@@ -152,6 +153,18 @@
         )
       ),
 
+      'share-app' => array(
+        'title' => "¡Hello again!",
+        'text' => array(
+          'If you\'re reading this, means that you use SunflowerSeeds quite often.
+          Therefore, we wanted to thank you!
+          We hope that you find it useful. And, if so (and you know someone that may also finds it handy),
+          please, share SunflowerSeeds with them. With this simple gesture, you\'ll make the world a better place.',
+          'This message will appear occasionally.',
+          'Don\'t show it again.'
+        )
+      ),
+
       'import-text' => array('Upload a file from your PC', 'URL of a website', 'Search'),
 
       'tools' => array(
@@ -202,7 +215,8 @@
             'Voice accent',
             'Change speaking speed',
             'Highlight current word (Text to speech)',
-            'Highlight color'
+            'Highlight color',
+            'Spell checking'
           )
         ),
 
@@ -262,6 +276,22 @@
         )
       ),
 
+      'share-app' => array(
+        'title' => "Hola de nou!",
+        'text' => array(
+          '
+          Si estàs llegint això, vol dir que empres SunflowerSeeds sovint.
+
+          Per això, et volíem donar les gràcies!
+
+          Esperem que t\'estigui sent útil. I, si és així (i coneixes a algú que potser li interessi),
+          sisplay, comparteix SunflowerSeeds. Amb aquest petit gest, a part d\'ajudar-nos, estaràs fent del
+          món un lloc una mica millor.',
+          'Aquest missatge sortirà de tant en tant.',
+          'No el tornis a mostrar.'
+        )
+      ),
+
       'import-text' => array('Puja un arxiu des del teu ordinador', 'Url d\'un lloc web', 'Buscar'),
 
       'tools' => array(
@@ -312,7 +342,8 @@
             'Accent de la veu en off',
             'Velocitat de la veu en off',
             'Ressaltar la paraula que est&agrave; llegint la veu en off',
-            'Color de ressaltat'
+            'Color de ressaltat',
+            'Correció ortogràfica'
           )
         ),
       ),

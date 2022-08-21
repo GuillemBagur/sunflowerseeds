@@ -1,45 +1,14 @@
-// The tabs are the little buttons at the top-left of #display-text
-// They're used to change from page-1 to page-2
-const tabs = document.getElementsByClassName("tab");
-let activeTab = 0;
 const overwrite = document.getElementById("overwrite");
-
-const changeTab = (sum) => {
-  activeTab = Math.abs((activeTab + sum) % 2).toString();
-  document.getElementById(activeTab).click();
-};
-
-// Toggle the state (active/not-active) of a tab
-const toggleTabs = (el) => {
-  // First of all, leave all tabs as not-active
-  activeTab = parseInt(el.id);
-  for (let tab of tabs) {
-    tab.classList.remove("active");
-  }
-
-  // Add to the clicked element the property active
-  el.classList.add("active");
-  // Load the data from that page
-  let data = JSON.parse(getKeyData("sunflower-seeds", "{}", true));
-  let savedText = data.hasOwnProperty("text") ? data["text"][activeTab] : "";
-  savedText =
-    data["text"][activeTab] == undefined ? "" : data["text"][activeTab];
-
-  // Display the saved text on #display-text
-  text.value = savedText;
-
-  // Add styles to letters
-  renderLetters();
-};
+let spellingMistakes;
 
 // Delete the whole text of a page
 const deleteText = () => {
   let ans = confirm("¿Seguro que quieres eliminar todo el texto de esta hoja?");
   if (!ans) return;
   // If confirmation == true
-  text.value = ""; // Delete
+  text.innerHTML = ""; // Delete
   renderLetters(); // Just in case
-  updateText(); // Save changes
+  // Save changes
 
   // Feedback
   toast.innerHTML = feedback["delete"];
@@ -55,7 +24,7 @@ const copyText = () => {
   text.setSelectionRange(0, 99999); /* For mobile devices */
 
   /* Copy the text inside the text field */
-  navigator.clipboard.writeText(text.value);
+  navigator.clipboard.writeText(text.innerHTML);
   clearSelection();
   text.blur();
 
@@ -74,4 +43,48 @@ const pasteText = () => {
     },
     (err) => console.log(err)
   );
+};
+
+const checkSpelling = () => {
+  const options = JSON.parse(localStorage.getItem("sunflower-seeds") ?? "{}");
+  if (!options["active-dict"]) {
+    document.getElementById("text").innerHTML =
+      document.getElementById("text").innerText;
+    return;
+  }
+  const dict = options.dictionary ?? [];
+  console.log(text.innerHTML);
+  if (text.innerHTML == "") {
+    text.innerHTML = (options || {}).hasOwnProperty("text")
+      ? options["text"]
+      : "";
+  }
+  const allWords = removePunctuation(text.innerHTML).split(/\s+/g);
+  console.log(dict);
+  const allDifferentWords = allWords
+    .filter((el, index) => allWords.indexOf(el) == index)
+    .filter((el, index) => {
+      console.log(el, !dict.includes(el));
+      return !dict.includes(el);
+    });
+
+  const maxLengthWords = allDifferentWords.slice(0, 200); // Only 200 different words allowed
+  const url = "corrector.php?";
+  const params = new URLSearchParams({ words: JSON.stringify(maxLengthWords) });
+
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", url + params);
+  xhr.onload = () => {
+    console.log(url + params);
+    if (xhr.status === 200) {
+      const response = JSON.parse(xhr.responseText) || xhr.responseText;
+      console.log(response);
+      highLightSpellingErrors(response);
+      spellingMistakes = response;
+    } else {
+      console.log("Error " + xhr.status);
+    }
+  };
+
+  xhr.send();
 };

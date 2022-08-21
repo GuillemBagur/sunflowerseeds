@@ -25,7 +25,11 @@ const hideAllPopups = () =>{
 }
 
 const openPopup = id =>{
-  let el = document.getElementById(id).style.visibility = 'visible';
+  let el = document.getElementById(id);
+  el.style.visibility = 'visible';
+  const opacity = el.dataset.bgopacity ?? 1;
+  console.log(opacity);
+  bg.style.opacity = opacity;
   bg.style.visibility = 'visible';
 }
 
@@ -41,7 +45,7 @@ const checkNewUser = () =>{
 
 // Hide all windows when clicking on .bg (dark background)
 window.addEventListener('DOMContentLoaded', ()=>{
-  hideAllPopups();
+  //hideAllPopups();
   bg.addEventListener('click', () => hideAllPopups());
   addEventListenerToClass('click', 'btn-options', () => {
     renderLetters();

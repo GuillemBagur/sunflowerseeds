@@ -104,8 +104,8 @@ const end = () => {
   r = 1;
   speechSynthesis.cancel();
   changeInnerHTMLToClass('btn-speech', `<i class="icofont-audio"></i> ${speechButtonInner}`);
-  document.getElementById('display-text').innerHTML = textSrc;
-  updateText();
+  document.getElementById('text').innerHTML = textSrc;
+  
   renderLetters();
 }
 
@@ -123,7 +123,7 @@ const speak = () => {
   msg.voice = updateVoice();
   msg.text = word;
   words[num] = `<span style="background-color:yellow;">${words[num]}</span>`;
-  document.getElementById('display-text').innerHTML = words.join(' ');
+  document.getElementById('text').innerHTML = words.join(' ');
   window.speechSynthesis.speak(msg);
 
   num++;
@@ -131,14 +131,13 @@ const speak = () => {
 }
 
 const textToSpeech = () => {
-  console.log(activeTab);
   if (r == 1) {
     num = 0;
     msg.rate = parseFloat(document.getElementById('speech-rate').value);
     toast.innerHTML = feedback['speech'];
     toast.classList.remove('hidden');
     r = 0;
-    textSrc = document.getElementById('text').value;
+    textSrc = document.getElementById('text').innerHTML;
     //msg.voice = updateVoice();
     speak(textSrc);
     changeInnerHTMLToClass('btn-speech', `<i class="icofont-close"></i> ${speechButtonInner}`);

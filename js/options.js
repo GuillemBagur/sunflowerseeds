@@ -5,6 +5,7 @@
 // All option-inputs/selects
 const appOptions = document.getElementsByClassName("app-option");
 const coloredLetters = document.getElementById("colored-letters");
+const displayText = document.getElementById("text");
 
 // Add highlighted letter button and input
 const addLetter = document.getElementById("add-letter");
@@ -25,6 +26,21 @@ const loadOptions = () => {
   for (let el of appOptions) {
     el.value = options.hasOwnProperty(el.id) ? options[el.id] : el.value;
   }
+};
+
+const saveText = () => {
+  savingTimes = 0;
+
+  const cleanText = text.innerHTML.replace(/<[^>]*>/gi, "");
+  options["text"] = cleanText;
+  localStorage.setItem("sunflower-seeds", JSON.stringify(options));
+};
+
+let savingTimes = 0;
+const execSaveText = () => {
+  savingTimes++;
+  if (savingTimes < 10) return;
+  saveText();
 };
 
 // Update options when input is changing
@@ -78,7 +94,7 @@ const hlLetters = () => {
   // Load all letters/chars chosen by user (in options)
   // Struct: "char":"color"
   let letters = options.hasOwnProperty("letters") ? options["letters"] : {};
-  let processedText = text.value;
+  let processedText = text.innerHTML;
 
   // Convert all chars to a string (we'll use that string in the regex)
   let chars = "";
@@ -87,7 +103,7 @@ const hlLetters = () => {
   }
 
   // Global regex that turns every letter/char to its color
-  let regex = new RegExp(`[${chars}]`, "gi");
+  let regex = new RegExp(`(?<!<[^>]*)[${chars}]`, "gi");
   processedText = processedText
     .replace(/\r?\n|\r/gi, "<br>")
     .replace(regex, (char) => {
@@ -95,7 +111,7 @@ const hlLetters = () => {
       return `<span style='color:${color}'>${char}</span>`;
     });
 
-  document.getElementById("display-text").innerHTML = processedText;
+  document.getElementById("text").innerHTML = processedText;
 };
 
 // Load and prepare to display colored letters into div correctly
@@ -106,7 +122,11 @@ const renderLetters = () => {
     : {};
   options["letters"][letterToColor.value] = chosenColor.value;
   localStorage.setItem("sunflower-seeds", JSON.stringify(options));
-  document.getElementById("display-text").style.visibility = "visible";
+
+  if (spellingMistakes) {
+    highLightSpellingErrors(spellingMistakes);
+  }
+
   hlLetters();
   showColoredLetters();
   updateOptions();
@@ -119,15 +139,26 @@ const saveOverwrite = () => {
 
 overwrite.addEventListener("click", saveOverwrite);
 
-const updateText = () => {
-  if (!options.hasOwnProperty("text")) {
-    options["text"] = ["", ""];
-  }
-
-  options["text"][activeTab] =
-    text.value != undefined || text.value != null ? text.value : "";
-
+const saveUseDict = () => {
+  options["active-dict"] = document.getElementById("active-dict").checked;
+  console.log(document.getElementById("active-dict").checked, options["active-dict"]);
   localStorage.setItem("sunflower-seeds", JSON.stringify(options));
+}
+
+document.getElementById("active-dict").addEventListener("click", saveUseDict);
+
+const highLightSpellingErrors = (mistakes) => {
+  for (let word in mistakes) {
+    if (!mistakes[word]) {
+      const regex = new RegExp(word, "gi");
+      document.getElementById("text").innerHTML = document
+        .getElementById("text")
+        .innerText.replace(
+          regex,
+          `<span class="spelling-error">${word}</span>`
+        );
+    }
+  }
 };
 
 const checkUsedTimes = () => {
@@ -136,12 +167,17 @@ const checkUsedTimes = () => {
   savedOptions["used-times"] = savedOptions.hasOwnProperty("used-times")
     ? savedOptions["used-times"] + 1
     : 1;
+
+  saveStat("used-times", 1);
   localStorage.setItem("sunflower-seeds", JSON.stringify(savedOptions));
-  if (savedOptions.hasOwnProperty("show-share-app") && !savedOptions["show-share-app"]){
+  if (
+    savedOptions.hasOwnProperty("show-share-app") &&
+    !savedOptions["show-share-app"]
+  ) {
     checkNewUser();
     return;
   }
-  if (savedOptions["used-times"] % 2 === 0) {
+  if (savedOptions["used-times"] % 10 === 0) {
     openPopup("share-app");
     return;
   }
@@ -162,11 +198,12 @@ const changeLang = () => {
 };
 
 window.addEventListener("DOMContentLoaded", () => {
+  const options = JSON.parse(localStorage.getItem("sunflower-seeds") ?? "{}");
   checkUsedTimes();
-  text.value = options.hasOwnProperty("text") ? options["text"][activeTab] : "";
-  document.getElementById("text").value = cleanText(
-    document.getElementById("text").value
-  );
+  text.innerHTML = (options || {}).hasOwnProperty("text")
+    ? options["text"]
+    : "";
+
   loadOptions();
   updateOptions();
   addEventListenerToClass("change", "app-option", () => {
@@ -175,6 +212,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   overwrite.checked = options["overwrite"] ?? false;
+  document.getElementById("active-dict").checked = options["active-dict"] ?? false;
 
   // While changing a value, the option panel turns semi transparent
   addEventListenerToClass("mousedown", "option-input", () => {
@@ -188,8 +226,6 @@ window.addEventListener("DOMContentLoaded", () => {
     optionsPanel.style.opacity = "1";
   });
 
-  text.addEventListener("change", updateText);
-
   addLetter.addEventListener("click", () => {
     if (letterToColor.value == "") {
       alert("Tienes que escribir un carácter");
@@ -197,20 +233,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     renderLetters();
-  });
-
-  // The 'text' element is a textarea when user clicks on it.
-  // When blur, it turns into a normal div, that can highlight letters.
-  document.getElementById("text").addEventListener("blur", () => {
-    document.getElementById("text").value = cleanText(
-      document.getElementById("text").value
-    );
-    renderLetters();
-  });
-  document.getElementById("text").addEventListener("change", () => {
-    document.getElementById("text").value = cleanText(
-      document.getElementById("text").value
-    );
   });
 
   appLang.addEventListener("blur", changeLang);
@@ -227,23 +249,49 @@ window.addEventListener("DOMContentLoaded", () => {
 
   fromOrtografia = localStorage.getItem("from-ortografia");
   if (fromOrtografia) {
-    text.value = fromOrtografia;
+    text.innerHTML = fromOrtografia;
   }
 
   localStorage.removeItem("from-ortografia");
-});
 
-const saveText = () => {
-  let history =
-    JSON.parse(localStorage.getItem("sunflower-seeds"))["history"] ?? [];
-  history.unshift(text.value);
-  if (history.length > 10) {
-    history = history.slice(0, 10);
+  checkSpelling();
+
+  if (options["text"]) {
+    text.innerHTML = options["text"];
   }
 
-  options["history"] = history;
-  console.log(options["history"], text.value);
-  localStorage.setItem("sunflower-seeds", JSON.stringify(options));
-};
+  
 
-document.getElementById("text").addEventListener("change", saveText);
+  const saveTextIntoHistory = () => {
+    let history = options["history"] ?? [];
+    if (history === {}) history = [];
+    const cleanText = text.innerHTML.replace(/<[^>]*>/gi, "");
+    if (history.includes(cleanText)) return;
+    history.unshift(cleanText);
+    if (history.length > 10) {
+      history.length = 10;
+    }
+
+    options["history"] = history;
+    localStorage.setItem("sunflower-seeds", JSON.stringify(options));
+    saveText();
+  };
+
+  text.addEventListener("input", execSaveText);
+  text.addEventListener("blur", () => {
+    saveTextIntoHistory();
+    hlLetters();
+    showColoredLetters();
+    updateOptions();
+  });
+
+  text.addEventListener("click", (evt) =>
+    propagateEvent(evt, "spelling-error", promptAddToDict)
+  );
+
+  background.addEventListener("click", () => {
+    updateOptions();
+  });
+});
+
+

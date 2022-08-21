@@ -3,8 +3,8 @@ var DataArr = [];
 PDFJS.workerSrc = '';
 
 function extractText(file) {
-  document.getElementById('text').value = (overwrite.checked) ? '' : document.getElementById('text').value;
-  prevImportVal = document.getElementById('text').value;
+  document.getElementById('text').innerHTML = (overwrite.checked) ? '' : document.getElementById('text').innerHTML.replace(/<[^>]*>/gi, "");
+  prevImportVal = document.getElementById('text').innerHTML.replace(/<[^>]*>/gi, "");
   toast.innerHTML = feedback['doc'];
   toast.classList.remove('hidden');
   var fReader = new FileReader();
@@ -85,11 +85,11 @@ function pdfAsArray(pdfAsArray) {
 
         var div = document.getElementById('text');
 
-        div.value += (outputStr + pagesText[pageNum]);
+        div.innerHTML += (outputStr + pagesText[pageNum]);
         toast.classList.add('hidden');
-        updateText();
         renderLetters();
-        div.value = cleanText(div.value);
+        div.innerHTML = cleanText(div.innerHTML.replace(/<[^>]*>/gi, ""));
+        saveStat("pdf", 1);
       }
     });
 

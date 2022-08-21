@@ -21,11 +21,10 @@ const ocr = (url, lang) => {
       text
     }
   }) => {
-    //console.log(text);
-    document.getElementById('text').value = (overwrite.checked) ? text : document.getElementById('text').value + text;
-    updateText();
+    document.getElementById('text').innerHTML = (overwrite.checked) ? text : document.getElementById('text').innerHTML + text;
     renderLetters();
     toast.classList.add('hidden');
+    saveStat("ocr", 1);
   });
 
 }

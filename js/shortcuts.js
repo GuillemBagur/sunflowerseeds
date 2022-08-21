@@ -10,5 +10,5 @@ document.addEventListener('DOMContentLoaded', ()=>{
   shortcut.add("Control+Right", ()=>changeTab(21), {'disable_in_input':true});
   shortcut.add("Control+E", ()=>text.click());
   shortcut.add("Control+C", copyText, {'disable_in_input':true});
-  shortcut.add("Control+Backspace", deleteText, {'disable_in_input':true});
+  shortcut.add("Control+Alt+O", checkSpelling, {'disable_in_input':true});
 });

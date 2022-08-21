@@ -44,8 +44,13 @@ msg = new SpeechSynthesisUtterance();
 
 // When the voices are loaded
 window.speechSynthesis.onvoiceschanged = async function () {
-  speechSynthesis.cancel(); // Just in case
-  responsiveVoice.cancel();
+  if (speechSynthesis) {
+    speechSynthesis.cancel(); // Just in case
+  }
+
+  if (typeof responsiveVoice != "undefined") {
+    responsiveVoice.cancel();
+  }
 
   voices = window.speechSynthesis.getVoices(); // Get the voices
   for (voice of voices) {
@@ -117,15 +122,21 @@ accentSel.addEventListener("click", () => {
 const end = () => {
   toast.classList.add("hidden");
   r = 1;
-  speechSynthesis.cancel();
-  responsiveVoice.cancel();
+
+  if (speechSynthesis) {
+    speechSynthesis.cancel(); // Just in case
+  }
+
+  if (typeof responsiveVoice != "undefined") {
+    responsiveVoice.cancel();
+  }
 
   changeInnerHTMLToClass(
     "btn-speech",
     `<i class="icofont-audio"></i> ${speechButtonInner}`
   );
-  document.getElementById("display-text").innerHTML = textSrc;
-  updateText();
+
+  text.innerHTML = textSrc;
   renderLetters();
 };
 
@@ -144,53 +155,71 @@ document.getElementById("highlight-color").addEventListener("change", () => {
 // If there aren't any words or the user has clicked on 'stop', it ends
 const speak = () => {
   let hlColor = localStorage.getItem("highlight-color") ?? "#5401d0";
-  let words = textSrc.split(/\s/g);
+  let words = text.innerHTML.replace(/<[^>]*>/gi, "").split(/\s/g);
   word = nextWord(words, num);
   if (word == null || word == undefined || r) return end();
-
   words[
     num
   ] = `<span style="background-color:${hlColor};">${words[num]}</span>`;
-  document.getElementById("display-text").innerHTML = words.join(" ");
+  text.innerHTML = words.join(" ")
 
   console.log(msg);
   if (langSel.value == "ca") {
-    console.log(1);
-    responsiveVoice.speak(word, "Catalan Male", {onend: speak});
+    try{
+      responsiveVoice.speak(word, "Catalan Male", { onend: speak });
+    }catch(err){
+      alert("La voz seleccionada no está disponible actualmente");
+      return;
+    }
+    
   } else {
-    console.log(2);
     msg.voice = updateVoice();
     msg.text = word;
     window.speechSynthesis.speak(msg);
   }
 
   num++;
+
   msg.onend = speak;
+
+  if (!responsiveVoice) return;
   responsiveVoice.onend = speak;
 };
 
 /* *** MAIN FUNCTION *** */
 const textToSpeech = () => {
   if (r == 1) {
+    saveStat("speech", 1);
     msg.rate = parseFloat(document.getElementById("speech-rate").value);
     toast.innerHTML = feedback["speech"];
     toast.classList.remove("hidden");
-
+    let cleanText = text.innerHTML.replace(/<[^>]*>/gi, "");
     if (document.getElementById("speech-highlight").checked) {
       num = 0;
-      textSrc = document.getElementById("text").value;
+      textSrc = cleanText;
       r = 0;
       speak();
     } else {
-      textSrc = document.getElementById("text").value;
+      textSrc = cleanText;
       r = 0;
       msg.text = textSrc;
 
-      window.speechSynthesis.cancel();
-      responsiveVoice.cancel();
+      if (speechSynthesis) {
+        speechSynthesis.cancel(); // Just in case
+      }
+
+      if (typeof responsiveVoice != "undefined") {
+        responsiveVoice.cancel();
+      }
       if (msg) {
         if (langSel.value == "ca") {
-          responsiveVoice.speak(msg.text, "Catalan Male");
+          try{
+            responsiveVoice.speak(word, "Catalan Male", { onend: end });
+          }catch(err){
+            alert("La voz seleccionada no está disponible actualmente");
+            toast.classList.add("hidden");
+            return;
+          }
         } else {
           msg.voice = updateVoice();
           window.speechSynthesis.speak(msg);
