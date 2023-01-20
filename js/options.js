@@ -31,7 +31,7 @@ const loadOptions = () => {
 const saveText = () => {
   savingTimes = 0;
 
-  const cleanText = text.innerHTML.replace(/<[^>]*>/gi, "");
+  const cleanText = text.innerText.replace("\n", "</br>");
   options["text"] = cleanText;
   localStorage.setItem("sunflower-seeds", JSON.stringify(options));
 };
