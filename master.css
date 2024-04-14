@@ -1,7 +1,7 @@
 @import url("https://allfont.es/allfont.css?fonts=comic-sans-ms");
-@import url("http://fonts.cdnfonts.com/css/verdana");
-@import url("http://fonts.cdnfonts.com/css/playtimewithhottoddiesoblique-2");
-@import url("http://fonts.cdnfonts.com/css/calibri-light");
+@import url("https://fonts.cdnfonts.com/css/verdana");
+@import url("https://fonts.cdnfonts.com/css/playtimewithhottoddiesoblique-2");
+@import url("https://fonts.cdnfonts.com/css/calibri-light");
 
 :root {
   --main: #5401d0;
@@ -327,7 +327,7 @@ select {
   outline: none;
   cursor: pointer;
   background: transparent;
-  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='https://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
   background-repeat: no-repeat;
   background-position-x: 94%;
   background-position-y: 50%;
@@ -336,7 +336,7 @@ select {
 }
 
 select:focus {
-  background-image: url("data:image/svg+xml;utf8,%3Csvg fill='%235401d0' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;utf8,%3Csvg fill='%235401d0' height='24' viewBox='0 0 24 24' width='24' xmlns='https://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
 }
 
 .canvas-wrapper select {
@@ -347,7 +347,7 @@ select:focus {
 }
 
 .canvas-wrapper select:focus {
-  background-image: url("data:image/svg+xml;utf8,%3Csvg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;utf8,%3Csvg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='https://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
   border-color: white;
   transition: all 0.2s;
 }
