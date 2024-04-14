@@ -51,6 +51,17 @@ function findWithAttr(array, attr, value) {
   return -1;
 }
 
+// Like a find function, but instead of equals, the criteria is "starts with"
+function findStartsWith(array, attr, value) {
+  for (let i = 0; i < array.length; i++) {
+    const regex = new RegExp(`^${value}`);
+    if (regex.test(array[i][attr])) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 // This function filters which characters put by user is a letter/num (to be able to color)
 function checkAvailableLetter(evt) {
   var code = evt.which ? evt.which : evt.keyCode;

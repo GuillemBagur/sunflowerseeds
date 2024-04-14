@@ -21,6 +21,13 @@ const langNames = {
   eu: "Euskara",
 };
 
+const langCountry = {
+  es: "ES",
+  en: "GB",
+  fr: "FR",
+  de: "DE",
+};
+
 const accentNames = {
   ES: "Espa&ntildea",
   US: "United States",
@@ -101,11 +108,16 @@ const updateAccents = () => {
 };
 
 const updateVoice = () => {
-  let voiceName = getKeyData("audio-accent", "{}", true);
-  let chosenVoice =
-    langSel.value != "ca"
-      ? voices[findWithAttr(voices, "name", voiceName)]
-      : "ca";
+  let voiceName = getKeyData("audio-accent", "", true);
+  if (!voiceName?.length || voiceName === "{}") {
+    voiceName = langSel.value;
+  }
+  console.log(voiceName);
+  if (!voiceName?.length) {
+    voiceName = "es";
+  }
+
+  let chosenVoice = voices[findStartsWith(voices, "lang", voiceName)];
   return chosenVoice;
 };
 
@@ -187,7 +199,7 @@ const speak = () => {
 };
 
 /* *** MAIN FUNCTION *** */
-const textToSpeech = () => {
+const textToSpeech = async () => {
   if (r == 1) {
     saveStat("speech", 1);
     msg.rate = parseFloat(document.getElementById("speech-rate").value);
@@ -215,11 +227,12 @@ const textToSpeech = () => {
         if (langSel.value == "ca") {
           try {
             console.log(msg);
-            responsiveVoice.speak(msg?.text, "Catalan Male", { onend: end });
+            await responsiveVoice.speak(msg?.text, "Catalan Male", {
+              onend: end,
+            });
           } catch (err) {
-            alert("La voz seleccionada no está disponible actualmente");
-            toast.classList.add("hidden");
-            console.log(err);
+            msg.voice = updateVoice();
+            window.speechSynthesis.speak(msg);
             return;
           }
         } else {
