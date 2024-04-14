@@ -169,6 +169,7 @@ const speak = () => {
       responsiveVoice.speak(word, "Catalan Male", { onend: speak });
     } catch (err) {
       alert("La voz seleccionada no está disponible actualmente");
+      console.log(err);
       return;
     }
   } else {
@@ -213,10 +214,12 @@ const textToSpeech = () => {
       if (msg) {
         if (langSel.value == "ca") {
           try {
-            responsiveVoice.speak(word, "Catalan Male", { onend: end });
+            console.log(msg);
+            responsiveVoice.speak(msg?.text, "Catalan Male", { onend: end });
           } catch (err) {
             alert("La voz seleccionada no está disponible actualmente");
             toast.classList.add("hidden");
+            console.log(err);
             return;
           }
         } else {

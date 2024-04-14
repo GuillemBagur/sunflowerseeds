@@ -374,7 +374,6 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
   <script type="text/javascript" src='js/share-text.js'></script>
 
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=n1eTMzx4"></script>
-
   <script>
     const showCodeParam = +"<?php echo ($_GET["showCode"] || "0") ?>";
     if (showCodeParam) {
