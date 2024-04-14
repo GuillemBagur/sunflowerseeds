@@ -155,23 +155,22 @@ document.getElementById("highlight-color").addEventListener("change", () => {
 // If there aren't any words or the user has clicked on 'stop', it ends
 const speak = () => {
   let hlColor = localStorage.getItem("highlight-color") ?? "#5401d0";
-  let words = text.innerHTML.replace(/<[^>]*>/gi, "").split(/\s/g);
-  word = nextWord(words, num);
+  let words = removeHTMLTags(text.innerHTML).split(/\s/g);
+  let word = nextWord(words, num);
   if (word == null || word == undefined || r) return end();
   words[
     num
   ] = `<span style="background-color:${hlColor};">${words[num]}</span>`;
-  text.innerHTML = words.join(" ")
+  text.innerHTML = addBrs(words.join(" "));
 
   console.log(msg);
   if (langSel.value == "ca") {
-    try{
+    try {
       responsiveVoice.speak(word, "Catalan Male", { onend: speak });
-    }catch(err){
+    } catch (err) {
       alert("La voz seleccionada no está disponible actualmente");
       return;
     }
-    
   } else {
     msg.voice = updateVoice();
     msg.text = word;
@@ -193,7 +192,7 @@ const textToSpeech = () => {
     msg.rate = parseFloat(document.getElementById("speech-rate").value);
     toast.innerHTML = feedback["speech"];
     toast.classList.remove("hidden");
-    let cleanText = text.innerHTML.replace(/<[^>]*>/gi, "");
+    let cleanText = removeHTMLTags(text.innerHTML);
     if (document.getElementById("speech-highlight").checked) {
       num = 0;
       textSrc = cleanText;
@@ -213,9 +212,9 @@ const textToSpeech = () => {
       }
       if (msg) {
         if (langSel.value == "ca") {
-          try{
+          try {
             responsiveVoice.speak(word, "Catalan Male", { onend: end });
-          }catch(err){
+          } catch (err) {
             alert("La voz seleccionada no está disponible actualmente");
             toast.classList.add("hidden");
             return;

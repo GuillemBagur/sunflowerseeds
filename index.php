@@ -174,7 +174,6 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
       <br>
       <label><?php echo ($text[$lang]['options']['lang']['labels'][5]); ?></label><input type="color" id="highlight-color" class="app-option" value="#ffffff"><br>
       <br>
-      <label><?php echo ($text[$lang]['options']['lang']['labels'][6]); ?><input type="checkbox" id="active-dict"></label><br>
 
 
     </fieldset>
@@ -322,7 +321,7 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
     // It's necessary to load the translation from PHP to a JS variable
     let speechButtonInner = `<?php echo ($text[$lang]['tools'][0]); ?>`
 
-    let jsLang = '<?php echo($lang); ?>';
+    let jsLang = '<?php echo ($lang); ?>';
   </script>
 
 
@@ -348,8 +347,10 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
   <script>
     if ('<?php echo ($_GET["code"]) ?>' === "error") {
       alert("Ahora mismo no puedes compartir el texto. Inténtalo más tarde.");
-      window.location.href = "index.php?lang=<?php echo($lang); ?>";
+      window.location.href = "index.php?lang=<?php echo ($lang); ?>";
     }
+
+    
   </script>
 
   <script type="text/javascript" src="js/display-popups.js"></script>
@@ -360,7 +361,7 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
 
   <script type="text/javascript" src="js/ocr.js"></script>
   <script type="text/javascript" src="js/crop-img.js"></script>
-  <script type="text/javascript" src="js/shortcuts.js"></script>
+  <!-- <script type="text/javascript" src="js/shortcuts.js"></script> -->
   <script type="text/javascript" src="js/scraping.js"></script>
   <script type="text/javascript" src="js/load-history.js"></script>
 
@@ -375,8 +376,8 @@ Copyright (c) 2021-present Guillem Uriel Baugr Moll and other contributors
   <script src="https://code.responsivevoice.org/responsivevoice.js?key=n1eTMzx4"></script>
 
   <script>
-    const showCodeParam = +"<?php echo($_GET["showCode"] || "0") ?>";
-    if(showCodeParam) {
+    const showCodeParam = +"<?php echo ($_GET["showCode"] || "0") ?>";
+    if (showCodeParam) {
       console.log(showCodeParam);
       console.log(2);
       execShare();

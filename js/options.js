@@ -31,8 +31,8 @@ const loadOptions = () => {
 const saveText = () => {
   savingTimes = 0;
 
-  const cleanText = text.innerText.replace("\n", "</br>");
-  options["text"] = cleanText;
+  const cleanedText = cleanText(text.innerText.replace(/\n/g, "</br>"));
+  options["text"] = cleanedText;
   localStorage.setItem("sunflower-seeds", JSON.stringify(options));
 };
 
@@ -105,7 +105,7 @@ const hlLetters = () => {
   // Global regex that turns every letter/char to its color
   let regex = new RegExp(`(?<!<[^>]*)[${chars}]`, "gi");
   processedText = processedText
-    .replace(/\r?\n|\r/gi, "<br>")
+    .replace(/\r?\n|\r/g, "<br>")
     .replace(regex, (char) => {
       let color = letters[char.toLowerCase()] ?? letters[char.toUpperCase()];
       return `<span style='color:${color}'>${char}</span>`;
@@ -141,11 +141,12 @@ overwrite.addEventListener("click", saveOverwrite);
 
 const saveUseDict = () => {
   options["active-dict"] = document.getElementById("active-dict").checked;
-  console.log(document.getElementById("active-dict").checked, options["active-dict"]);
+  console.log(
+    document.getElementById("active-dict").checked,
+    options["active-dict"]
+  );
   localStorage.setItem("sunflower-seeds", JSON.stringify(options));
-}
-
-document.getElementById("active-dict").addEventListener("click", saveUseDict);
+};
 
 const highLightSpellingErrors = (mistakes) => {
   for (let word in mistakes) {
@@ -212,7 +213,6 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   overwrite.checked = options["overwrite"] ?? false;
-  document.getElementById("active-dict").checked = options["active-dict"] ?? false;
 
   // While changing a value, the option panel turns semi transparent
   addEventListenerToClass("mousedown", "option-input", () => {
@@ -260,11 +260,9 @@ window.addEventListener("DOMContentLoaded", () => {
     text.innerHTML = options["text"];
   }
 
-  
-
   const saveTextIntoHistory = () => {
     let history = options["history"] ?? [];
-    if (history === {}) history = [];
+    if (JSON.stringify(history) === "{}") history = [];
     const cleanText = text.innerHTML.replace(/<[^>]*>/gi, "");
     if (history.includes(cleanText)) return;
     history.unshift(cleanText);
@@ -293,5 +291,3 @@ window.addEventListener("DOMContentLoaded", () => {
     updateOptions();
   });
 });
-
-

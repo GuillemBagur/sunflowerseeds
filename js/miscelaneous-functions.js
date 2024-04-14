@@ -1,9 +1,35 @@
 // Links to some external functions
 
+text.addEventListener("blur", function () {
+  console.log(document.getElementById("text").innerHTML);
+  text.innerHTML = refreshFormat(text.innerHTML);
+});
+
 // Remove unnecessary spaces
 const cleanText = (text) => {
-  return text.replace(/\s\s+/g, " ").replace(/^\s/, "");
+  return text.replace(/ +/g, " ").replace(/&nbsp;/g, " ");
 };
+
+function refreshFormat(text) {
+  if (!text) return "";
+  if (!text.length) return "";
+  text = removeHTMLTags(text);
+  text = cleanText(text);
+  text = addBrs(text);
+  console.log(text);
+  return text;
+}
+
+function removeHTMLTags(text) {
+  return text
+    .replace(/<br(\s+)?\/?>/gi, "\n")
+    .replace(/<div(\s+)?\/?>/gi, "\n")
+    .replace(/<[^>]*>/gi, "");
+}
+
+function addBrs(text) {
+  return text.replace(/\n/g, "<br />");
+}
 
 // Get data from a key of localStorage by a secure way
 // Maybe it could be entirely replaced by adding ?? [altValue]
@@ -88,15 +114,13 @@ function getBase64(file) {
   };
 }
 
-
 const removeClass = (className, inner) => {
   const els = document.getElementsByClassName(className);
-  for(let el of els){
+  for (let el of els) {
     console.log(el.innerHTML, inner);
-    if(el.innerHTML == inner) el.classList.remove(className);
+    if (el.innerHTML == inner) el.classList.remove(className);
   }
-}
-
+};
 
 const copyFrom = (elId) => {
   const el = document.getElementById(elId);
@@ -135,7 +159,10 @@ const removePunctuation = (text) => {
 
 const showWordCorrector = (el, coords) => {
   const yDesv = 35;
-  const word = el.innerHTML.replace(/<[^>]*>/gi, "");
+  const word = el.innerHTML
+    .replace(/<br \/>/, "\n")
+    .replace(/<br>/, "\n")
+    .replace(/<[^>]*>/gi, "");
   const wordCorrector = document.getElementById("word-corrector");
   console.log(wordCorrector);
   const msgBox = `Añadir "${word}" al diccionario`;
@@ -182,11 +209,10 @@ const addWordToDict = (el) => {
   removeClass("spelling-error", word);
 };
 
-
 const saveStat = (stat, valToSum) => {
   let stats = JSON.parse(localStorage.getItem("sunflower-seeds-stats") || "{}");
   let newVal = stats[stat] ?? 0;
   newVal += valToSum;
   stats[stat] = newVal;
   localStorage.setItem("sunflower-seeds-stats", JSON.stringify(stats));
-}
+};
