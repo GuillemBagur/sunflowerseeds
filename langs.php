@@ -23,7 +23,7 @@
           'Esta nueva versi&oacute;n es m&aacute;s intuitiva y completa que la anterior.',
 
           'Pero si prefieres la versi&oacute;n cl&aacute;sica,
-          <a href="http://sunflowerseeds.pangea.org/v1/">puedes acceder a ella
+          <a href="https://sunflowerseeds.pangea.org/v1/">puedes acceder a ella
           clickando aqu&iacute;.</a>',
 
           '<a style="text-align: center" target="_blank" href="https://youtu.be/FE8ogNXlcLE">Ver el tutorial</a>',
@@ -145,7 +145,7 @@
           'This version is more intuitive than the previous one.',
 
           'But if you still prefer the classic version,
-          <a href="http://sunflowerseeds.pangea.org/v1/">you can use it by clicking here.</a>',
+          <a href="https://sunflowerseeds.pangea.org/v1/">you can use it by clicking here.</a>',
 
           '<a style="text-align: center" target="_blank" href="https://youtu.be/FE8ogNXlcLE">Watch the tutorial</a>',
 
@@ -267,7 +267,7 @@
           complerta que l\'anterior.',
 
           'Per&ograve;, si prefereixes la versi&oacute; cl&agrave;ssica,
-          <a href="http://sunflowerseeds.pangea.org/v1/">pots accedir-hi fent
+          <a href="https://sunflowerseeds.pangea.org/v1/">pots accedir-hi fent
           clic aqu&iacute;.</a>',
 
           '<a style="text-align: center" target="_blank" href="https://youtu.be/FE8ogNXlcLE">Ver el tutorial</a>',
