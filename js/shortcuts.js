@@ -1,5 +1,5 @@
 // AMAZING LIBRARY CREATED BY Binny V A
-// https://www.openjs.com/scripts/events/keyboard_shortcuts/#
+// http://www.openjs.com/scripts/events/keyboard_shortcuts/#
 // THANK YOU FROM ALL SUNFLOWERSEEDS TEAM
 
 

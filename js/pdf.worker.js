@@ -4,7 +4,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -50,7 +50,7 @@ var pdfjsBuild = '0e2d50f';
 /* This class implements the QM Coder decoding as defined in
  *   JPEG 2000 Part I Final Committee Draft Version 1.0
  *   Annex C.3 Arithmetic decoding procedure
- * available at https://www.jpeg.org/public/fcd15444-1.pdf
+ * available at http://www.jpeg.org/public/fcd15444-1.pdf
  *
  * The arithmetic decoder is used in conjunction with context models to decode
  * JPEG2000 and JBIG2 streams.
@@ -2357,7 +2357,7 @@ function isValidUrl(url, allowRelative) {
   if (!url || typeof url !== 'string') {
     return false;
   }
-  // RFC 3986 (https://tools.ietf.org/html/rfc3986#section-3.1)
+  // RFC 3986 (http://tools.ietf.org/html/rfc3986#section-3.1)
   // scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
   var protocol = /^[a-z][a-z0-9+\-.]*(?=:)/i.exec(url);
   if (!protocol) {
@@ -3717,7 +3717,7 @@ function loadJpegStream(id, imageUrl, objs) {
 
   // Polyfill from https://github.com/Polymer/URL
 /* Any copyright is dedicated to the Public Domain.
- * https://creativecommons.org/publicdomain/zero/1.0/ */
+ * http://creativecommons.org/publicdomain/zero/1.0/ */
 (function checkURLConstructor(scope) {
   /* jshint ignore:start */
 
@@ -3727,9 +3727,9 @@ function loadJpegStream(id, imageUrl, objs) {
     if (typeof URL === 'function' &&
         typeof URL.prototype === 'object' &&
         ('origin' in URL.prototype)) {
-      var u = new URL('b', 'https://a');
+      var u = new URL('b', 'http://a');
       u.pathname = 'c%20d';
-      hasWorkingUrl = u.href === 'https://a/c%20d';
+      hasWorkingUrl = u.href === 'http://a/c%20d';
     }
   } catch(e) { }
 
@@ -4322,7 +4322,7 @@ function loadJpegStream(id, imageUrl, objs) {
   if (OriginalURL) {
     jURL.createObjectURL = function(blob) {
       // IE extension allows a second optional options argument.
-      // https://msdn.microsoft.com/en-us/library/ie/hh772302(v=vs.85).aspx
+      // http://msdn.microsoft.com/en-us/library/ie/hh772302(v=vs.85).aspx
       return OriginalURL.createObjectURL.apply(OriginalURL, arguments);
     };
     jURL.revokeObjectURL = function(url) {
@@ -30959,7 +30959,7 @@ var Type1Font = (function Type1FontClosure() {
   function Type1Font(name, file, properties) {
     // Some bad generators embed pfb file as is, we have to strip 6-byte header.
     // Also, length1 and length2 might be off by 6 bytes as well.
-    // https://www.math.ubc.ca/~cass/piscript/type1.pdf
+    // http://www.math.ubc.ca/~cass/piscript/type1.pdf
     var PFB_HEADER_SIZE = 6;
     var headerBlockLength = properties.length1;
     var eexecBlockLength = properties.length2;
@@ -31259,7 +31259,7 @@ var CFFFont = (function CFFFontClosure() {
 })();
 
 // Workaround for Private Use Area characters in Chrome on Windows
-// https://code.google.com/p/chromium/issues/detail?id=122465
+// http://code.google.com/p/chromium/issues/detail?id=122465
 // https://github.com/mozilla/pdf.js/issues/1689
 (function checkChromeWindows() {
   if (typeof navigator !== 'undefined' &&
@@ -31468,7 +31468,7 @@ var PDFFunction = (function PDFFunctionClosure() {
         var range = IR[9];
 
         // Building the cube vertices: its part and sample index
-        // https://rjwagner49.com/Mathematics/Interpolation.pdf
+        // http://rjwagner49.com/Mathematics/Interpolation.pdf
         var cubeVertices = 1 << m;
         var cubeN = new Float64Array(cubeVertices);
         var cubeVertex = new Uint32Array(cubeVertices);
@@ -33233,7 +33233,7 @@ var CalGrayCS = (function CalGrayCSClosure() {
     // Computes L as per spec. ( = cs.YW * AG )
     // Except if other than default BlackPoint values are used.
     var L = cs.YW * AG;
-    // https://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html, Ch 4.
+    // http://www.poynton.com/notes/colour_and_gamma/ColorFAQ.html, Ch 4.
     // Convert values to rgb range [0, 255].
     var val = Math.max(295.8 * Math.pow(L, 0.333333333333333333) - 40.8, 0) | 0;
     dest[destOffset] = val;
@@ -33276,7 +33276,7 @@ var CalGrayCS = (function CalGrayCSClosure() {
 //
 var CalRGBCS = (function CalRGBCSClosure() {
 
-  // See https://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html for these
+  // See http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html for these
   // matrices.
   var BRADFORD_SCALE_MATRIX = new Float32Array([
     0.8951, 0.2664, -0.1614,
@@ -33288,7 +33288,7 @@ var CalRGBCS = (function CalRGBCSClosure() {
     0.4323053, 0.5183603, 0.0492912,
     -0.0085287, 0.0400428, 0.9684867]);
 
-  // See https://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html.
+  // See http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html.
   var SRGB_D65_XYZ_TO_RGB_MATRIX = new Float32Array([
     3.2404542, -1.5371385, -0.4985314,
     -0.9692660, 1.8760108, 0.0415560,
@@ -33393,7 +33393,7 @@ var CalRGBCS = (function CalRGBCSClosure() {
   }
 
   function sRGBTransferFunction(color) {
-    // See https://en.wikipedia.org/wiki/SRGB.
+    // See http://en.wikipedia.org/wiki/SRGB.
     if (color <= 0.0031308){
       return adjustToRange(0, 1, 12.92 * color);
     }
@@ -33431,7 +33431,7 @@ var CalRGBCS = (function CalRGBCSClosure() {
     }
 
     // For the blackPoint calculation details, please see
-    // https://www.adobe.com/content/dam/Adobe/en/devnet/photoshop/sdk/
+    // http://www.adobe.com/content/dam/Adobe/en/devnet/photoshop/sdk/
     // AdobeBPC.pdf.
     // The destination blackPoint is the default blackPoint [0, 0, 0].
     var zeroDecodeL = decodeL(0);
@@ -33511,7 +33511,7 @@ var CalRGBCS = (function CalRGBCSClosure() {
     var Z = cs.MZA * AGR + cs.MZB * BGG + cs.MZC * CGB;
 
     // The following calculations are based on this document:
-    // https://www.adobe.com/content/dam/Adobe/en/devnet/photoshop/sdk/
+    // http://www.adobe.com/content/dam/Adobe/en/devnet/photoshop/sdk/
     // AdobeBPC.pdf.
     var XYZ = tempConvertMatrix1;
     XYZ[0] = X;
@@ -33668,7 +33668,7 @@ var LabCS = (function LabCSClosure() {
 
     var r, g, b;
     // Using different conversions for D50 and D65 white points,
-    // per https://www.color.org/srgb.pdf
+    // per http://www.color.org/srgb.pdf
     if (cs.ZW < 1) {
       // Assuming D50 (X=0.9642, Y=1.00, Z=0.8249)
       r = X * 3.1339 + Y * -1.6170 + Z * -0.4906;
@@ -40459,7 +40459,7 @@ var AnnotationBorderStyle = (function AnnotationBorderStyleClosure() {
     setDashArray: function AnnotationBorderStyle_setDashArray(dashArray) {
       // We validate the dash array, but we do not use it because CSS does not
       // allow us to change spacing of dashes. For more information, visit
-      // https://www.w3.org/TR/css3-background/#the-border-style.
+      // http://www.w3.org/TR/css3-background/#the-border-style.
       if (isArray(dashArray) && dashArray.length > 0) {
         // According to the PDF specification: the elements in a dashArray
         // shall be numbers that are nonnegative and not all equal to zero.
@@ -40714,10 +40714,10 @@ var LinkAnnotation = (function LinkAnnotationClosure() {
     }
   }
 
-  // Lets URLs beginning with 'www.' default to using the 'https://' protocol.
+  // Lets URLs beginning with 'www.' default to using the 'http://' protocol.
   function addDefaultProtocolToUrl(url) {
     if (isString(url) && url.indexOf('www.') === 0) {
-      return ('https://' + url);
+      return ('http://' + url);
     }
     return url;
   }
@@ -42677,7 +42677,7 @@ var NetworkManager = (function NetworkManagerClosure() {
       }
       var xhrStatus = xhr.status || OK_RESPONSE;
 
-      // From https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35.2:
+      // From http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.35.2:
       // "A server MAY ignore the Range header". This means it's possible to
       // get a 200 rather than a 206 response from a range request.
       var ok_response_on_range_request =
